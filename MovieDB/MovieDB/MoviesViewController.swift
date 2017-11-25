@@ -8,11 +8,16 @@
 
 import UIKit
 
-class MoviesViewController: UIViewController {
+class MoviesViewController: UIViewController, KeyboardHandler {
     
     @IBOutlet weak var movieSearchBar: UISearchBar!
     @IBOutlet weak var moviesTableView: UITableView!
     @IBOutlet weak var suggestionsTableView: UITableView!
+    @IBOutlet weak var bottomLayoutConstraint: NSLayoutConstraint!
+    
+    var bottomConstraint: NSLayoutConstraint{
+        return bottomLayoutConstraint
+    }
     
     let cellReuseIdentifier = "MovieCell"
     
@@ -20,6 +25,10 @@ class MoviesViewController: UIViewController {
         super.viewDidLoad()
         MoviesManager.shared.updateResults()
         MoviesManager.shared.delegate = self
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.registerKeyboardNotifications()
     }
     
     func toggleSuggestions(){

@@ -149,6 +149,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="bottomLayoutConstraint" destination="SfK-QL-ipj" id="XQy-Sj-sIQ"/>
                         <outlet property="movieSearchBar" destination="mbI-JZ-Xb0" id="zHd-uJ-fgp"/>
                         <outlet property="moviesTableView" destination="vWV-CK-s17" id="0Zg-Kt-7sT"/>
                         <outlet property="suggestionsTableView" destination="jKd-Av-CR0" id="lCC-EG-Dwx"/>
