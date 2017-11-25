@@ -10,7 +10,7 @@ import Foundation
 import Moya
 
 enum MovieService {
-    case showMovies
+    case showMovies(page:Int)
     case searchMovies(query: String, page: Int)
 }
 
@@ -36,8 +36,8 @@ extension MovieService: TargetType {
         
     var task: Task {
         switch self {
-        case .showMovies:
-            return .requestPlain
+        case .showMovies(let page):
+            return .requestParameters(parameters: ["page": page], encoding: URLEncoding.queryString)
         case let .searchMovies(query, page):
             return .requestParameters(parameters: ["query": query, "page": page], encoding: URLEncoding.queryString)
         }

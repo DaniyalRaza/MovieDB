@@ -27,23 +27,34 @@ class MoviesManager: NSObject {
     var isLoadingData = false
     var currentPage = 1
     
-    var currentQuery: String?{
+    var previousQuery:String?{
         didSet{
-            updateResults(query: currentQuery)
+            currentPage = 1
+            movies.removeAll()
         }
     }
     
-    func updateResults(query:String? = nil){
-        if query == nil || query!.isEmpty{
+    var currentQuery: String?{
+        didSet{
+            if currentQuery != previousQuery{
+                previousQuery = currentQuery
+            }
+            else{
+                currentPage += 1
+            }
+            updateResults()
+        }
+    }
+    
+    func updateResults(){
+        if isLoadingData{ return }
+        if currentQuery == nil || currentQuery!.isEmpty{
             showMovies()
         }
         else{
-            if !isLoadingData{
-                currentPage+=1
-                isLoadingData = true
-                searchMovies(query: query!, page: currentPage)
-            }
+            searchMovies(query: currentQuery!, page: currentPage)
         }
+        self.isLoadingData = true
     }
     
     
@@ -67,19 +78,20 @@ class MoviesManager: NSObject {
     }
     
     func showMovies(){
-        moviesProvider.request(.showMovies) { result in
+        moviesProvider.request(.showMovies(page: currentPage)) { result in
             switch result {
             case let .success(moyaResponse):
                 let data = moyaResponse.data
                 let jsonDictionary = JSON(data: data).dictionaryValue
                 
                 if let results = jsonDictionary["results"]?.array{
-                    self.movies = results.map{ Movie(json: $0) }
+                    self.movies.append(contentsOf: results.map{ Movie(json: $0) })
                     self.delegate?.moviesFetched()
                 }
             case let .failure(error):
                 print(error)
             }
+            self.isLoadingData = false
         }
     }
     
