@@ -16,7 +16,7 @@ enum MovieService {
 
 extension MovieService: TargetType {
     
-    var baseURL: URL { return URL(string: "http://api.themoviedb.org/3?api_key=2696829a81b1b5827d515ff121700838")! }
+    var baseURL: URL { return URL(string: APIConfiguration.baseURL)! }
     
     var path: String {
         switch self {

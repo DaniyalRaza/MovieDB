@@ -81,7 +81,7 @@ extension Movie{
     
     var posterURL:URL?{
         if posterPath == nil {return nil}
-        return URL(string: "http://image.tmdb.org/t/p/w92\(posterPath!)")
+        return URL(string: "\(APIConfiguration.imagesBaseURL)\(posterPath!)")
     }
     
 }
