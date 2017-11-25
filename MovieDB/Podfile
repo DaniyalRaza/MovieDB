@@ -8,6 +8,8 @@ target 'MovieDB' do
   # Pods for MovieDB
     pod 'SwiftyJSON'
     pod 'Moya'
+    pod 'SDWebImage', '~> 4.0'
+
 
   target 'MovieDBTests' do
     inherit! :search_paths
