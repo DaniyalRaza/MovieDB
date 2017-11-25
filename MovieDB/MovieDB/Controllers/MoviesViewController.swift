@@ -8,17 +8,15 @@
 
 import UIKit
 
-class MoviesViewController: UIViewController, KeyboardHandler {
+class MoviesViewController: UIViewController{
     
+    //MARK: IBOutles
     @IBOutlet weak var movieSearchBar: UISearchBar!
     @IBOutlet weak var moviesTableView: UITableView!
     @IBOutlet weak var suggestionsTableView: UITableView!
     @IBOutlet weak var bottomLayoutConstraint: NSLayoutConstraint!
     
-    var bottomConstraint: NSLayoutConstraint{
-        return bottomLayoutConstraint
-    }
-    
+    //MARK: Properties
     let cellReuseIdentifier = "MovieCell"
     
     override func viewDidLoad() {
@@ -28,14 +26,17 @@ class MoviesViewController: UIViewController, KeyboardHandler {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        //Register keyboard listener to adjust tableview
         self.registerKeyboardNotifications()
     }
     
+    //Toggle hide suggestion tableview
     func toggleSuggestions(){
         suggestionsTableView.isHidden = !suggestionsTableView.isHidden
     }
 }
 
+//MARK: Datasource Methods
 extension MoviesViewController: UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -58,6 +59,7 @@ extension MoviesViewController: UITableViewDataSource{
     }
 }
 
+//MARK: Delegate Methods
 extension MoviesViewController: UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == suggestionsTableView{
@@ -74,9 +76,18 @@ extension MoviesViewController: UITableViewDelegate{
 }
 
 extension MoviesViewController: MoviesDelegate{
+    
+    //Reload tableview to reflect updated model
     func moviesFetched() {
         moviesTableView.reloadData()
     }
+    
+    //Show alert for failed search
+    func movieFetchFailed(message: String) {
+        
+    }
+    
+    
 }
 
 extension MoviesViewController: UISearchBarDelegate{
@@ -91,4 +102,12 @@ extension MoviesViewController: UISearchBarDelegate{
         suggestionsTableView.reloadData()
         toggleSuggestions()
     }
+}
+
+extension MoviesViewController: KeyboardHandler{
+    
+    var bottomConstraint: NSLayoutConstraint{
+        return bottomLayoutConstraint
+    }
+    
 }

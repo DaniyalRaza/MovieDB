@@ -12,14 +12,17 @@ import SwiftyJSON
 
 protocol MoviesDelegate : class {
     func moviesFetched()
+    func movieFetchFailed(message:String)
 }
 
 class MoviesManager: NSObject {
 
+    //Singleton instance
     static let shared = MoviesManager()
     
     weak var delegate:MoviesDelegate?
     
+    //Movie service provider
     let moviesProvider = MoyaProvider<MovieService>()
     
     var movies:[Movie] = []
@@ -27,6 +30,9 @@ class MoviesManager: NSObject {
     var isLoadingData = false
     var currentPage = 1
     
+    /**
+     The previous query when set resets the page counter to 1 and clears movie records.
+     */
     var previousQuery:String?{
         didSet{
             currentPage = 1
@@ -34,6 +40,9 @@ class MoviesManager: NSObject {
         }
     }
     
+    /**
+     The current query when set increments the page counter and updates movie record.
+     */
     var currentQuery: String?{
         didSet{
             if currentQuery != previousQuery{
@@ -46,6 +55,9 @@ class MoviesManager: NSObject {
         }
     }
     
+    /**
+     Initiates movies search and fetches top movies when no query provided
+     */
     func updateResults(){
         if isLoadingData{ return }
         if currentQuery == nil || currentQuery!.isEmpty{
@@ -57,7 +69,13 @@ class MoviesManager: NSObject {
         self.isLoadingData = true
     }
     
-    
+    /**
+     Searches movie in database and poulates the movies array. Notifies the delegate on success or failure
+     
+     - parameter query: The query to search in database.
+     - parameter page: The page number to fetch from.
+
+     */
     func searchMovies(query:String, page:Int){
         moviesProvider.request(.searchMovies(query: query, page: page)) { result in
             switch result {
@@ -70,8 +88,11 @@ class MoviesManager: NSObject {
                     self.delegate?.moviesFetched()
                     SearchHistory.addSuggestion(query: query)
                 }
+                else{
+                    print("No movies to show")
+                }
             case let .failure(error):
-                print(error)
+                self.delegate?.movieFetchFailed(message: error.localizedDescription)
             }
             self.isLoadingData = false
         }
@@ -89,7 +110,7 @@ class MoviesManager: NSObject {
                     self.delegate?.moviesFetched()
                 }
             case let .failure(error):
-                print(error)
+                self.delegate?.movieFetchFailed(message: error.localizedDescription)
             }
             self.isLoadingData = false
         }

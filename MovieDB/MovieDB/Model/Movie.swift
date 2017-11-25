@@ -74,6 +74,11 @@ public struct Movie {
 
 extension Movie{
     
+    
+    /**
+     This property returns a URL to fetch movie poster
+     */
+    
     var posterURL:URL?{
         if posterPath == nil {return nil}
         return URL(string: "http://image.tmdb.org/t/p/w92\(posterPath!)")
