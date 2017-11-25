@@ -19,9 +19,7 @@ class SearchHistory {
         return suggestions
     }
     
-    static func addSuggestion(query:String, shouldAdd:Bool) {
-        if !shouldAdd { return }
-        
+    static func addSuggestion(query:String) {
         var _suggestions = suggestions
         if _suggestions.contains(query) {
             return

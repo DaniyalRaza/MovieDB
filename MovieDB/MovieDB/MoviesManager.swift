@@ -65,10 +65,10 @@ class MoviesManager: NSObject {
                 let data = moyaResponse.data
                 let jsonDictionary = JSON(data: data).dictionaryValue
                 
-                if let results = jsonDictionary["results"]?.array{
+                if let results = jsonDictionary["results"]?.array, results.count > 0{
                     self.movies.append(contentsOf: results.map{ Movie(json: $0) })
                     self.delegate?.moviesFetched()
-                    SearchHistory.addSuggestion(query: query, shouldAdd: results.count > 0)
+                    SearchHistory.addSuggestion(query: query)
                 }
             case let .failure(error):
                 print(error)
