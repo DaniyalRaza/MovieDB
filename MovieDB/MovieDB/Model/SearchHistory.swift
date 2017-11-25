@@ -34,15 +34,15 @@ class SearchHistory {
      - parameter query: Query to save in suggestions.
      */
     
-    static func addSuggestion(query:String) {
+    static func addSuggestion(query:String?) {
         var _suggestions = suggestions
-        if _suggestions.contains(query) {
+        if query == nil || _suggestions.contains(query!){
             return
         }
         if _suggestions.count == 10 {
             _suggestions.removeLast()
         }
-        _suggestions.insert(query, at: 0)
+        _suggestions.insert(query!, at: 0)
         UserDefaults.standard.setValue(_suggestions, forKey: suggestionsKey)
     }
 }

@@ -78,8 +78,11 @@ extension MoviesViewController: UITableViewDelegate{
 extension MoviesViewController: MoviesDelegate{
     
     //Reload tableview to reflect updated model
-    func moviesFetched() {
+    func moviesFetched(hasMovies:Bool) {
         moviesTableView.reloadData()
+        if !hasMovies{
+            self.showAlert(title: "Oops", message: "No movies to show")
+        }
     }
     
     //Show alert for failed search
