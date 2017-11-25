@@ -84,7 +84,7 @@ extension MoviesViewController: MoviesDelegate{
     
     //Show alert for failed search
     func movieFetchFailed(message: String) {
-        
+        self.showAlert(title: "Oops", message: message)
     }
     
     
