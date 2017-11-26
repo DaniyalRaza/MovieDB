@@ -36,13 +36,11 @@ class SearchHistory {
     
     static func addSuggestion(query:String?) {
         var _suggestions = suggestions
-        if query == nil || query!.isEmpty || _suggestions.contains(query!){
-            return
-        }
+        guard let query = query, !query.isEmpty, !_suggestions.contains(query) else {return}
         if _suggestions.count == 10 {
             _suggestions.removeLast()
         }
-        _suggestions.insert(query!, at: 0)
+        _suggestions.insert(query, at: 0)
         UserDefaults.standard.setValue(_suggestions, forKey: suggestionsKey)
     }
 }
