@@ -36,7 +36,7 @@ class SearchHistory {
     
     static func addSuggestion(query:String?) {
         var _suggestions = suggestions
-        if query == nil || _suggestions.contains(query!){
+        if query == nil || query!.isEmpty || _suggestions.contains(query!){
             return
         }
         if _suggestions.count == 10 {
