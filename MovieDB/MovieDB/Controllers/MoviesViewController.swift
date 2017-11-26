@@ -17,12 +17,13 @@ class MoviesViewController: UIViewController{
     @IBOutlet weak var bottomLayoutConstraint: NSLayoutConstraint!
     
     //MARK: Properties
+    let moviesManager = MoviesManager()
     let cellReuseIdentifier = "MovieCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        MoviesManager.shared.updateResults()
-        MoviesManager.shared.delegate = self
+        moviesManager.updateResults()
+        moviesManager.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -43,7 +44,7 @@ extension MoviesViewController: UITableViewDataSource{
         if tableView == suggestionsTableView{
             return SearchHistory.suggestions.count
         }
-        return MoviesManager.shared.movies.count
+        return moviesManager.movies.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -54,7 +55,7 @@ extension MoviesViewController: UITableViewDataSource{
         }
         
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! MovieTableViewCell
-        cell.movie = MoviesManager.shared.movies[indexPath.row]
+        cell.movie = moviesManager.movies[indexPath.row]
         return cell        
     }
 }
@@ -69,8 +70,8 @@ extension MoviesViewController: UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == MoviesManager.shared.movies.count-1{
-            MoviesManager.shared.currentQuery = movieSearchBar.text
+        if indexPath.row == moviesManager.movies.count-1{
+            moviesManager.currentQuery = movieSearchBar.text
         }
     }
 }
@@ -96,7 +97,7 @@ extension MoviesViewController: MoviesDelegate{
 extension MoviesViewController: UISearchBarDelegate{
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        MoviesManager.shared.currentQuery = searchBar.text
+        moviesManager.currentQuery = searchBar.text
         searchBar.endEditing(true)
         toggleSuggestions()
     }

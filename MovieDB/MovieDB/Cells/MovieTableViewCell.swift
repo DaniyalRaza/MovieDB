@@ -21,12 +21,12 @@ class MovieTableViewCell: UITableViewCell {
     /**
      When set poulates the cell
      */
-    var movie:Movie! {
+    var movie:Movie? {
         didSet{
-            titleLabel.text = movie.title
-            releaseDateLabel.text = movie.releaseDate?.shortDate
-            overviewLabel.text = movie.overview
-            posterImageView.sd_setImage(with: movie.posterURL, completed: nil)
+            titleLabel.text = movie?.title
+            releaseDateLabel.text = movie?.releaseDate?.shortDate
+            overviewLabel.text = movie?.overview
+            posterImageView.sd_setImage(with: movie?.posterURL, completed: nil)
         }
     }
     

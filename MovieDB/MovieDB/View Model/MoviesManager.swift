@@ -17,8 +17,6 @@ protocol MoviesDelegate : class {
 
 class MoviesManager: NSObject {
 
-    //Singleton instance
-    static let shared = MoviesManager()
     //Movies Delegate
     weak var delegate:MoviesDelegate?
     //Movie service provider
